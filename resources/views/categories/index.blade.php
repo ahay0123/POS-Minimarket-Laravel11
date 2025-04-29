@@ -15,11 +15,11 @@
 
 <!-- Main content -->
 <section class="content">
-    <!-- @include('templates/feedback') -->
+    @include('templates/feedback')
     <!-- Default box -->
     <div class="box">
         <div class="box-header">
-            <a href="{{ url('product/add') }}" class="btn btn-success">
+            <a href="{{ url('categories/add') }}" class="btn btn-success">
                 <i class="fa fa-fw fa-plus-circle"></i>
                 Tambah
             </a>
@@ -30,22 +30,36 @@
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Product</th>
-                        <th>Price</th>
-                        <th>Unit</th>
+                        <th>Nama Category</th>
                         <th>Description</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                
+                    @foreach ($result as $row)
+                    <tr>
+                        <td>{{ !empty($i) ? ++$i : $i = 1}}</td>
+                        <td> {{ $row->nama_categories}}</td>
+                        <td>{{ $row->description}}</td>
+                        <td>
+                            <a href="{{ url("categories/$row->id_categories/edit") }}" class="btn btn-warning">
+                                <i class="fa fa-fw fa-pencil"></i>
+                            </a>
+                            <form method="POST" style="display: inline;" action="{{ url("categories/$row->id_categories/delete") }}">
+                                {{ csrf_field() }}
+                                {{ method_field('DELETE') }}
+                                <button type="submit" class="btn  btn-danger">
+                                    <i class="fa fa-fw fa-trash"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    @endforeach
                 </tbody>
                 <tfoot>
                     <tr>
                         <th>No</th>
                         <th>Product</th>
-                        <th>Price</th>
-                        <th>Unit</th>
                         <th>Description</th>
                         <th>Action</th>
                     </tr>
