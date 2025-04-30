@@ -15,7 +15,7 @@
 
 <!-- Main content -->
 <section class="content">
-    <!-- @include('templates/feedback') -->
+    @include('templates/feedback')
     <!-- Default box -->
     <div class="box">
         <div class="box-header">
@@ -32,21 +32,44 @@
                         <th>No</th>
                         <th>Product</th>
                         <th>Price</th>
-                        <th>Unit</th>
+                        <th>Stock</th>
                         <th>Description</th>
+                        <th>Category</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                
+                    @foreach ($result as $row)
+                    <tr>
+                        <td>{{ !empty($i) ? ++$i : $i = 1}}</td>
+                        <td> {{ $row->nama_produk}}</td>
+                        <td>{{ $row->description}}</td>
+                        <td>{{ $row->stock}}</td>
+                        <td>{{ $row->price}}</td>
+                        <td>{{ $row->categories->nama_categories}}</td>
+                        <td>
+                            <a href="{{ url("product/$row->id_product/edit") }}" class="btn btn-warning">
+                                <i class="fa fa-fw fa-pencil"></i>
+                            </a>
+                            <form method="POST" style="display: inline;" action="{{ url("product/$row->id_product/delete") }}">
+                                {{ csrf_field() }}
+                                {{ method_field('DELETE') }}
+                                <button type="submit" class="btn  btn-danger">
+                                    <i class="fa fa-fw fa-trash"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    @endforeach
                 </tbody>
                 <tfoot>
                     <tr>
                         <th>No</th>
                         <th>Product</th>
                         <th>Price</th>
-                        <th>Unit</th>
+                        <th>Stock</th>
                         <th>Description</th>
+                        <th>Category</th>
                         <th>Action</th>
                     </tr>
                 </tfoot>

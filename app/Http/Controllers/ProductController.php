@@ -12,7 +12,8 @@ class ProductController extends Controller
     public function index()
     {
         //
-        return view('product/index');
+        $data['result'] = \App\Models\Product::all();
+        return view('product/index')->with($data);
     }
 
     /**
@@ -31,13 +32,19 @@ class ProductController extends Controller
     {
         //
         $validated = $request->validate([
-            'id_product'        => 'required|unique:product',
-            'nama_product'      => 'required|max:100',
+            'nama_produk'      => 'required|max:100',
             'description'       => 'required|max:100',
             'stock'             => 'required|max:10',
-            'price'             => 'required|max:10'
+            'price'             => 'required|max:10',
+            'id_categories' => 'required|exists:categories,id_categories',
         ]);
-        
+
+        $input = $request->all();
+
+        $status = \App\Models\Product::create($input);
+
+        if ($status) return redirect('/')->with('success', 'Data berhasil di tambahkan');
+        else return redirect('product')->with('error', 'Data gagal di tambahkan');
     }
 
     /**
@@ -54,6 +61,8 @@ class ProductController extends Controller
     public function edit(string $id)
     {
         //
+        $data['result'] = \App\Models\Product::where('id_product', $id)->first();
+        return view('product/form')->with($data);
     }
 
     /**
@@ -62,6 +71,21 @@ class ProductController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        $validated = $request->validate([
+            'nama_produk'      => 'required|max:100',
+            'description'       => 'required|max:100',
+            'stock'             => 'required|max:10',
+            'price'             => 'required|max:10',
+            'id_categories'      => 'required|exists:categories'
+        ]);
+
+        $input = $request->all();
+
+        $result = \App\Models\Product::where('id_product', $id)->first();
+        $status = $result->update($input);
+
+        if ($status) return redirect('/')->with('success', 'Data berhasil di ubah');
+        else return redirect('product')->with('error', 'Data gagal di ubah');
     }
 
     /**
@@ -70,5 +94,10 @@ class ProductController extends Controller
     public function destroy(string $id)
     {
         //
+        $result = \App\Models\Product::where('id_product', $id)->first();
+        $status = $result->delete();
+
+        if ($status) return redirect('/')->with('success', 'Data berhasil di hapus');
+        else return redirect('product')->with('error', 'Data gagal di Hapus ');
     }
 }

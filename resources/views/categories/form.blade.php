@@ -4,7 +4,7 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
-        {{ empty($result) ? 'Tambah' : 'Edit' }} Data Category            <small>SMK Negeri 1 Cianjur</small>
+        {{ empty($result) ? 'Tambah' : 'Edit' }} Data Category            <small>Minimarket</small>
     </h1>
     <ol class="breadcrumb">
         <li><a href="{{ url('/') }}"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -43,7 +43,7 @@
                     <div class="col-sm-10">
                         <input type="text" name="description" class="form-control" placeholder="Masukkan Description" value="{{ @$result->description}}" />
                     </div>
-                </div>
+                 </div>
 
                 <div class="form-group">
                     <div class="col-sm-10 col-sm-offset-2">

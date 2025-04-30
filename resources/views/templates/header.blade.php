@@ -220,15 +220,15 @@
         <ul class="sidebar-menu">
           <li class="header">MAIN NAVIGATION</li>
           <li class="treeview">
-            <a href="{{ asset('/') }}">
-              <i class="fa fa-shirt"></i>
+            <a href="{{ url('/') }}">
+              <i class="fa fa-table"></i>
               <span>Product</span>
             </a>
           </li>
           <li>
-            <a href="{{ asset('siswa') }}">
-              <i class="fa fa-user"></i> <span>Siswa</span>
-            </a>
+            <a href="{{ url('categories') }}">
+              <i class="fa fa-list"></i> <span>Category</span>
+            </a>  
           </li>
         </ul>
       </section>

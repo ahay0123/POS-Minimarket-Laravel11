@@ -37,7 +37,7 @@ class CategoryController extends Controller
 
         $status = \App\Models\Category::create($input);
 
-        if($status) return redirect('/')->with('success', 'Data berhasil di tambahkan');
+        if($status) return redirect('/categories')->with('success', 'Data berhasil di tambahkan');
         else return redirect('categories')->with('error', 'Data gagal di tambahkan');
         
     }

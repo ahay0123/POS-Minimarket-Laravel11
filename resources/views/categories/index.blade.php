@@ -4,12 +4,12 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
-        Data Siswa
-        <small>SMK Negeri 1 Cianjur</small>
+        Data Category
+        <small>Minimarket</small>
     </h1>
     <ol class="breadcrumb">
         <li><a href="{{ url('/') }}"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Data Siswa</li>
+        <li class="active">Data Category</li>
     </ol>
 </section>
 
