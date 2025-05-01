@@ -225,9 +225,16 @@
               <span>Product</span>
             </a>
           </li>
+
           <li>
             <a href="{{ url('categories') }}">
               <i class="fa fa-list"></i> <span>Category</span>
+            </a>  
+          </li>
+
+          <li>
+            <a href="{{ url('user') }}">
+              <i class="fa fa-user"></i> <span>User</span>
             </a>  
           </li>
         </ul>

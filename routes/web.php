@@ -4,6 +4,9 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\UserController;
+
 // Route::get('/', function () {
 //     return view('welcome');
 // });
@@ -27,3 +30,14 @@ Route::post('product/add', [ProductController::class, 'store']);
 Route::get('product/{id}/edit', [ProductController::class, 'edit']);
 Route::patch('product/{id}/edit', [ProductController::class, 'update']);
 Route::delete('product/{id}/delete', [ProductController::class, 'destroy']);
+
+// User Route
+Route::get('/user', [UserController::class, 'index']);
+Route::get('user/add', [UserController::class, 'create']);
+Route::post('user/add', [UserController::class, 'store']);
+
+Route::get('user/{id}/edit', [UserController::class, 'edit']);
+Route::patch('user/{id}/edit', [UserController::class, 'update']);
+Route::delete('user/{id}/delete', [UserController::class, 'destroy']);
+
+Route::get('kasir/order', [OrderController::class, 'index']);

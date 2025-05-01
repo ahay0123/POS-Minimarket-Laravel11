@@ -25,7 +25,7 @@
         </div>
         <!-- /.box-header -->
         <div class="box-body">
-            <form action="{{ empty($result) ?  url('product/add') : url("product/$result->id_product/edit") }}" class="form-horizontal" method="POST">
+            <form action="{{ empty($result) ?  url('product/add') : url("product/$result->id_product/edit") }}" class="form-horizontal" method="POST" enctype="multipart/form-data">
                 {{ csrf_field () }}
 
                 @if (!empty($result))
@@ -68,6 +68,13 @@
                             <option value="{{ $category->id_categories }}" {{@$result->id_categories == $category->id_categories ? 'selected' : '' }}>{{ $category->nama_categories }}</option>
                             @endforeach
                         </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-sm-2">Foto</label>
+                    <div class="col-sm-10">
+                        <input type="file" name="foto"  />
                     </div>
                 </div>
 

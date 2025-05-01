@@ -37,10 +37,16 @@ class ProductController extends Controller
             'stock'             => 'required|max:10',
             'price'             => 'required|max:10',
             'id_categories' => 'required|exists:categories,id_categories',
+            'foto'             => 'required|mimes:jpeg,png|max:512'
         ]);
 
         $input = $request->all();
 
+        if ($request->hasFile('foto') && $request->file('foto')->isValid()) {
+            $filename = $input['nama_produk'] . "." . $request->file('foto')->getClientOriginalExtension();
+            $request->file('foto')->storeAs('', $filename);
+            $input['foto'] = $filename;
+        }
         $status = \App\Models\Product::create($input);
 
         if ($status) return redirect('/')->with('success', 'Data berhasil di tambahkan');
@@ -76,12 +82,18 @@ class ProductController extends Controller
             'description'       => 'required|max:100',
             'stock'             => 'required|max:10',
             'price'             => 'required|max:10',
-            'id_categories'      => 'required|exists:categories'
+            'id_categories'      => 'required|exists:categories',
+            'foto'             => 'required|mimes:jpeg,png|max:512'
         ]);
 
         $input = $request->all();
 
         $result = \App\Models\Product::where('id_product', $id)->first();
+        if ($request->hasFile('foto') && $request->file('foto')->isValid()) {
+            $filename = $input['nama_produk'] . "." . $request->file('foto')->getClientOriginalExtension();
+            $request->file('foto')->storeAs('', $filename);
+            $input['foto'] = $filename;
+        }
         $status = $result->update($input);
 
         if ($status) return redirect('/')->with('success', 'Data berhasil di ubah');
