@@ -72,9 +72,36 @@
                 </div>
 
                 <div class="form-group">
+                    <label class="control-label col-sm-2">SKU</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="sku" id="sku" placeholder="Masukkan nama SKU" value="{{ @$result->sku }}" />
+
+                        <!-- Tombol Scan -->
+                        <button type="button" class="btn btn-default" onclick="startScanner()" style="margin-top:10px;">
+                            <i class="fa fa-camera"></i> Scan Barcode
+                        </button>
+
+                        <!-- Tempat tampilkan scanner -->
+                        <div id="reader" style="width:300px; max-width:100%; margin-top:15px; display: none;"></div>
+                    </div>
+                </div>
+
+                @if(!empty($result->sku))
+                <div class="form-group">
+                    <div class="col-sm-10 col-sm-offset-2">
+                        <a href="{{ url('product/' . $result->id_product . '/print-barcode') }}" target="_blank" class="btn btn-default">
+                            <i class="fa fa-print"></i> Print Barcode
+                        </a>
+                        <img src="data:image/png;base64,{{ DNS1D::getBarcodePNG($result->sku, 'EAN13') }}" alt="barcode" />
+                    </div>
+                </div>
+                @endif
+
+
+                <div class="form-group">
                     <label class="control-label col-sm-2">Foto</label>
                     <div class="col-sm-10">
-                        <input type="file" name="foto"  />
+                        <input type="file" name="foto" />
                     </div>
                 </div>
 
@@ -101,4 +128,51 @@
 
 </section>
 <!-- /.content -->
+
+<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+<script>
+    let html5QrcodeScanner;
+    let isScannerRunning = false;
+
+    function startScanner() {
+        const reader = document.getElementById('reader');
+
+        if (isScannerRunning) return; // Jangan buka scanner 2x
+        reader.style.display = 'block';
+
+        if (!html5QrcodeScanner) {
+            html5QrcodeScanner = new Html5Qrcode("reader");
+        }
+
+        const config = {
+            fps: 10,
+            qrbox: 250, // square, cukup fleksibel untuk barcode dan QR
+            formatsToSupport: [
+                Html5QrcodeSupportedFormats.EAN_13,
+                Html5QrcodeSupportedFormats.CODE_128,
+                Html5QrcodeSupportedFormats.CODE_39
+            ]
+        };
+
+        html5QrcodeScanner.start({
+                facingMode: "environment"
+            },
+            config,
+            (decodedText, decodedResult) => {
+                document.getElementById('sku').value = decodedText;
+                html5QrcodeScanner.stop().then(() => {
+                    isScannerRunning = false;
+                    reader.style.display = 'none';
+                }).catch(err => console.error("Stop error", err));
+            },
+            (errorMessage) => {
+                // Tidak perlu tampilkan error tiap frame
+            }
+        ).then(() => {
+            isScannerRunning = true;
+        }).catch(err => {
+            console.error("Start camera error", err);
+        });
+    }
+</script>
 @endsection

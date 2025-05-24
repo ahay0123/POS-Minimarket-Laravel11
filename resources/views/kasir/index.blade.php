@@ -48,10 +48,31 @@
     <!-- Default box -->
     <div class="box">
         <div class="box-header">
-            <a href="{{ url('product/add') }}" class="btn btn-success">
-                <i class="fa fa-fw fa-plus-circle"></i>
-                Tambah
-            </a>
+
+
+            <div class="form-group row mt-2">
+                <form action="{{ url('keranjang/add-by-barcode') }}" method="POST" class="form-inline">
+                    @csrf
+                    <div class="form-group ">
+                        <div class="col-sm-10">
+                            <input type="text" name="sku" class="form-control" placeholder="Scan barcode di sini..." autofocus>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-success">
+                        <i class="fa fa-fw fa-plus-circle"></i>
+                        Confirm SKU
+                    </button>
+
+                </form>
+                <div class="col-sm-10">
+                    <!-- Tombol untuk membuka modal scan -->
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#scanModal">
+                        <i class="fa fa-fw fa-camera"></i> Scan with Camera
+                    </button>
+
+                </div>
+            </div>
         </div>
         <!-- /.box-header -->
         <div class="row">
@@ -70,13 +91,14 @@
                                     <h4>{{ $product->nama_produk }}</h4>
                                     <p>{{ $product->description }}</p>
                                     <p><strong>Rp {{ number_format($product->price, 0, ',', '.') }}</strong></p>
-                                    <p>
-                                    <form action="{{ url('keranjang/add') }}" method="POST">
-                                        @csrf
-                                        <input type="hidden" name="id_product" value="{{ $product->id_product }}">
-                                        <button type="submit" class="btn btn-primary btn-sm">Tambah</button>
-                                    </form>
-                                    </p>
+                                    <p><i>Stock : {{ $product->stock }}</i></p>
+                                    <div>
+                                        <form action="{{ url('keranjang/add') }}" method="POST">
+                                            @csrf
+                                            <input type="hidden" name="id_product" value="{{ $product->id_product }}">
+                                            <button type="submit" class="btn btn-primary btn-sm">Tambah</button>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -90,12 +112,17 @@
             <div class="col-md-4">
                 <div class="panel panel-default" style="padding: 15px;">
                     <div class="panel-heading">
-                        <strong><i class="glyphicon glyphicon-user"></i> Umum</strong>
+                        <strong><i class="glyphicon glyphicon-user"></i> Customer</strong>
                         <div class="pull-right">
-                            <select class="form-control input-sm" style="display: inline-block; width: auto;">
-                                <option>Agus Prawoto Hadi</option>
-                            </select>
-                            <input type="date" class="form-control input-sm" style="display: inline-block; width: auto;">
+                            <form action="{{ url('kasir/cek-member') }}" method="POST" class="mb-3">
+                                @csrf
+                                <input type="text" name="no_hp" placeholder="Masukkan No HP Member" class="form-control mb-2" required value="{{ session('no_hp') }}">
+                                <button type="submit" class="btn btn-primary btn-block">Cek Member</button>
+                            </form>
+
+                            @if(session('diskon'))
+                            <div class="alert alert-success">Diskon {{ session('diskon') }}% telah diterapkan</div>
+                            @endif
                         </div>
                         <div class="clearfix"></div>
                     </div>
@@ -144,17 +171,94 @@
 
                     </div>
 
+                    @php
+                    $keranjang = session('keranjang', []);
+                    $subtotal = 0;
+                    foreach ($keranjang as $item) {
+                    $subtotal += $item['harga'] * $item['jumlah'];
+                    }
+                    $pajakPersen = 2;
+                    $pajak = $subtotal * ($pajakPersen / 100);
+                    $total = $subtotal + $pajak;
+                    @endphp
 
-                    <p><strong>Sub Total:</strong> <span class=" pull-right">Rp 152.700</span></p>
-                    <p>Diskon (5%) <span class="pull-right">Rp -7.635</span></p>
-                    <p>Penyesuaian <span class="pull-right">Rp 0</span></p>
-                    <p>Pajak (11%) <span class="pull-right">Rp 15.957</span></p>
+                    <input type="hidden" id="subtotal" value="{{ $subtotal }}">
+                    <input type="hidden" id="pajakPersen" value="{{ $pajakPersen }}">
+
+                    <p><strong>Sub Total:</strong> <span class="pull-right" id="subtotalText">Rp {{ number_format($subtotal, 0, ',', '.') }}</span></p>
+                    <p>Pajak (<span id="pajakLabel">{{ $pajakPersen }}</span>%): <span class="pull-right" id="pajakText">Rp {{ number_format($pajak, 0, ',', '.') }}</span></p>
                     <hr>
-                    <h4><strong>Total:</strong> <span class="pull-right text-purple">Rp 161.022</span></h4>
+
+                    <hr>
+                    <h4><strong>Total:</strong> <span class="pull-right text-purple" id="totalText">Rp {{ number_format($total, 0, ',', '.') }}</span></h4>
+
+                    <h4><strong>Bayar:</strong>
+                        <span class="pull-right text-purple">
+                            <input type="number" id="bayar" oninput="hitungKembalian()" style="width: 160px;">
+                        </span>
+                    </h4>
+
+                    <h4><strong>Kembalian:</strong>
+                        <span class="pull-right text-purple" id="kembalianFormatted">Rp 0</span>
+                    </h4>
+                    <input type="hidden" id="diskonPersen" value="{{ session('diskon', 0) }}">
+
+                    <script>
+                        function formatRupiah(angka) {
+                            return angka.toLocaleString('id-ID', {
+                                style: 'currency',
+                                currency: 'IDR',
+                                minimumFractionDigits: 0
+                            });
+                        }
+
+                        function hitungTotal() {
+                            const subtotal = parseFloat(document.getElementById('subtotal').value) || 0;
+                            const pajakPersen = parseFloat(document.getElementById('pajakPersen').value) || 0;
+                            const diskonPersen = parseFloat(document.getElementById('diskonPersen').value) || 0;
+
+                            const diskon = subtotal * (diskonPersen / 100);
+                            const subtotalSetelahDiskon = subtotal - diskon;
+                            const pajak = subtotalSetelahDiskon * (pajakPersen / 100);
+                            const total = subtotalSetelahDiskon + pajak;
+
+                            document.getElementById('subtotalText').textContent = formatRupiah(subtotal);
+                            document.getElementById('pajakText').textContent = formatRupiah(pajak);
+                            document.getElementById('totalText').textContent = formatRupiah(total);
+                            document.getElementById('bayarButtonText').textContent = 'Bayar ' + formatRupiah(total);
+
+                            return total;
+                        }
+
+                        function hitungKembalian() {
+                            const bayar = parseInt(document.getElementById('bayar').value) || 0;
+                            const total = hitungTotal(); // Update ulang total setelah pajak & diskon
+                            const kembalian = bayar - total;
+
+                            document.getElementById('kembalianFormatted').textContent = formatRupiah(kembalian >= 0 ? kembalian : 0);
+                        }
+
+                        document.addEventListener('DOMContentLoaded', function() {
+                            hitungTotal();
+                        });
+
+                        document.getElementById('formBayar').addEventListener('submit', function() {
+                            document.getElementById('inputBayar').value = document.getElementById('bayar').value;
+                        });
+                    </script>
+
                 </div>
 
                 <div class="panel-footer text-center">
-                    <button class="btn btn-success btn-lg btn-block"><strong>Bayar Rp 161.022</strong></button>
+                    <form action="{{ url('/transaksi/store') }}" method="POST" id="formBayar">
+                        @csrf
+                        <input type="hidden" name="bayar" id="inputBayar">
+                        <input type="hidden" name="no_hp" value="{{ session('no_hp') }}">
+                        <button type="submit" class="btn btn-success btn-lg btn-block">
+                            <strong id="bayarButtonText">Bayar Rp ...</strong>
+                        </button>
+                    </form>
+
                 </div>
             </div>
         </div>
@@ -165,9 +269,8 @@
         Footer
     </div>
     <!-- /.box-footer-->
-    </div>
-    <!-- /.box -->
 
 </section>
 <!-- /.content -->
+
 @endsection

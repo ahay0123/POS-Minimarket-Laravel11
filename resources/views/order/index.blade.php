@@ -4,12 +4,12 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
-        Data Product
+        Data Orders
         <small>Minimarket</small>
     </h1>
     <ol class="breadcrumb">
         <li><a href="{{ url('/') }}"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Data Product</li>
+        <li class="active">Data Orders</li>
     </ol>
 </section>
 
@@ -19,10 +19,7 @@
     <!-- Default box -->
     <div class="box">
         <div class="box-header">
-            <a href="{{ url('product/add') }}" class="btn btn-success">
-                <i class="fa fa-fw fa-plus-circle"></i>
-                Tambah
-            </a>
+
         </div>
         <!-- /.box-header -->
         <div class="box-body">
@@ -30,37 +27,30 @@
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Image</th>
-                        <th>SKU</th>
-                        <th>Product</th>
-                        <th>Price</th>
-                        <th>Stock</th>
-                        <th>Description</th>
-                        <th>Category</th>
+                        <th>Invoice</th>
+                        <th>User</th>
+                        <th>Total</th>
+                        <th>Tanggal Order</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($result as $row)
+                    @foreach ($orders as $row)
                     <tr>
                         <td>{{ !empty($i) ? ++$i : $i = 1}}</td>
                         <td>
-                            <img src="{{ asset('uploads/'.@$row->foto) }}" width="80px" class="img">
+                            {{ $row->invoice}}
                         </td>
                         <td>
-                            {!! DNS1D::getBarcodeHTML($row->sku, 'C128') !!}
-                            {{ $row->sku}}
+                            {{ $row->id_user}}
                         </td>
-                        <td> {{ $row->nama_produk}}</td>
-                        <td>{{ $row->description}}</td>
-                        <td>{{ $row->stock}}</td>
-                        <td>{{ $row->price}}</td>
-                        <td>{{ $row->categories->nama_categories}}</td>
+                        <td>{{ number_format($row->total, 0, ',', '.') }}</td>
+                        <td>{{ $row->tanggal_transaksi}}</td>
                         <td>
-                            <a href="{{ url("product/$row->id_product/edit") }}" class="btn btn-warning">
+                            <a href="{{ url("order/$row->id_order/edit") }}" class="btn btn-warning">
                                 <i class="fa fa-fw fa-pencil"></i>
                             </a>
-                            <form method="POST" style="display: inline;" action="{{ url("product/$row->id_product/delete") }}">
+                            <form method="POST" style="display: inline;" action="{{ url("order/$row->id_order/delete") }}">
                                 {{ csrf_field() }}
                                 {{ method_field('DELETE') }}
                                 <button type="submit" class="btn  btn-danger">
@@ -74,13 +64,10 @@
                 <tfoot>
                     <tr>
                         <th>No</th>
-                        <th>Image</th>
-                        <th>SKU</th>
-                        <th>Product</th>
-                        <th>Price</th>
-                        <th>Stock</th>
-                        <th>Description</th>
-                        <th>Category</th>
+                        <th>Invoice</th>
+                        <th>User</th>
+                        <th>Total</th>
+                        <th>Tanggal Order</th>
                         <th>Action</th>
                     </tr>
                 </tfoot>

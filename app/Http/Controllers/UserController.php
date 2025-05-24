@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -11,7 +12,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+
         $data['result'] = \App\Models\User::all();
         return view('user/index')->with($data);
     }
@@ -40,7 +41,7 @@ class UserController extends Controller
 
         $status = \App\Models\User::create($input);
 
-        if($status) return redirect('/user')->with('success', 'Data berhasil di tambahkan');
+        if ($status) return redirect('/user')->with('success', 'Data berhasil di tambahkan');
         else return redirect('user')->with('error', 'Data gagal di tambahkan');
     }
 
@@ -50,7 +51,7 @@ class UserController extends Controller
     public function show(string $id)
     {
         //
-        
+
     }
 
     /**
@@ -79,7 +80,7 @@ class UserController extends Controller
         $result = \App\Models\User::where('id_user', $id)->first();
         $status = $result->update($input);
 
-        if($status) return redirect('/user')->with('success', 'Data berhasil di ubah');
+        if ($status) return redirect('/user')->with('success', 'Data berhasil di ubah');
         else return redirect('user')->with('error', 'Data gagal di ubah');
     }
 
@@ -92,7 +93,7 @@ class UserController extends Controller
         $result = \App\Models\User::where('id_user', $id)->first();
         $status = $result->delete();
 
-        if($status) return redirect('/user')->with('success', 'Data berhasil di hapus');
+        if ($status) return redirect('/user')->with('success', 'Data berhasil di hapus');
         else return redirect('user')->with('error', 'Data gagal di hapus');
     }
 }

@@ -15,23 +15,12 @@ class ProductSeeder extends Seeder
     {
         //
         $data = [
-            'name_product' => 'Setrika Baju',
-            'price' => '24000',
-            'unit' => 'kg',
-            'description' => 'Hanya setrika'
+            'username' => 'Kasir',
+            'password' => 'kasir',
+            'role' => 'kasir',
         ];
 
-        DB::table('product')->insert($data);
-
-        $data = [
-            'name_product' => 'Setrika Baju',
-            'price' => '24000',
-            'unit' => 'kg',
-            'description' => 'Hanya setrika'
-        ];
-
-        DB::table('product')->insert($data);
-
+        DB::table('table_user')->insert($data);
 
     }
 }

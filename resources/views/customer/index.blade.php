@@ -4,12 +4,12 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
-        Data Product
+        Data Customer / Member
         <small>Minimarket</small>
     </h1>
     <ol class="breadcrumb">
         <li><a href="{{ url('/') }}"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Data Product</li>
+        <li class="active">Data Customer / Member</li>
     </ol>
 </section>
 
@@ -19,7 +19,7 @@
     <!-- Default box -->
     <div class="box">
         <div class="box-header">
-            <a href="{{ url('product/add') }}" class="btn btn-success">
+            <a href="{{ url('customer/add') }}" class="btn btn-success">
                 <i class="fa fa-fw fa-plus-circle"></i>
                 Tambah
             </a>
@@ -30,13 +30,12 @@
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Image</th>
-                        <th>SKU</th>
-                        <th>Product</th>
-                        <th>Price</th>
-                        <th>Stock</th>
-                        <th>Description</th>
-                        <th>Category</th>
+                        <th>Nama</th>
+                        <th>No Hp</th>
+                        <th>Alamat</th>
+                        <th>Tanggal Daftar</th>
+                        <th>Poin</th>
+                        <th>Status</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -45,22 +44,20 @@
                     <tr>
                         <td>{{ !empty($i) ? ++$i : $i = 1}}</td>
                         <td>
-                            <img src="{{ asset('uploads/'.@$row->foto) }}" width="80px" class="img">
+                            {{ $row->nama}}
                         </td>
                         <td>
-                            {!! DNS1D::getBarcodeHTML($row->sku, 'C128') !!}
-                            {{ $row->sku}}
+                            {{ $row->no_hp}}
                         </td>
-                        <td> {{ $row->nama_produk}}</td>
-                        <td>{{ $row->description}}</td>
-                        <td>{{ $row->stock}}</td>
-                        <td>{{ $row->price}}</td>
-                        <td>{{ $row->categories->nama_categories}}</td>
+                        <td> {{ $row->alamat}}</td>
+                        <td>{{ $row->tanggal_daftar}}</td>
+                        <td>{{ $row->poin}}</td>
+                        <td>{{ $row->status}}</td>
                         <td>
-                            <a href="{{ url("product/$row->id_product/edit") }}" class="btn btn-warning">
+                            <a href="{{ url("customer/$row->id_customers/edit") }}" class="btn btn-warning">
                                 <i class="fa fa-fw fa-pencil"></i>
                             </a>
-                            <form method="POST" style="display: inline;" action="{{ url("product/$row->id_product/delete") }}">
+                            <form method="POST" style="display: inline;" action="{{ url("customer/$row->id_customers/delete") }}">
                                 {{ csrf_field() }}
                                 {{ method_field('DELETE') }}
                                 <button type="submit" class="btn  btn-danger">
@@ -74,13 +71,12 @@
                 <tfoot>
                     <tr>
                         <th>No</th>
-                        <th>Image</th>
-                        <th>SKU</th>
-                        <th>Product</th>
-                        <th>Price</th>
-                        <th>Stock</th>
-                        <th>Description</th>
-                        <th>Category</th>
+                        <th>Nama</th>
+                        <th>No Hp</th>
+                        <th>Alamat</th>
+                        <th>Tanggal Daftar</th>
+                        <th>Poin</th>
+                        <th>Status</th>
                         <th>Action</th>
                     </tr>
                 </tfoot>

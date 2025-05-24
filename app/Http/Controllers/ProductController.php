@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -14,6 +15,12 @@ class ProductController extends Controller
         //
         $data['result'] = \App\Models\Product::all();
         return view('product/index')->with($data);
+    }
+
+    public function printBarcode($id)
+    {
+        $product = Product::findOrFail($id);
+        return view('product.print-barcode', compact('product'));
     }
 
     /**
@@ -83,7 +90,7 @@ class ProductController extends Controller
             'stock'             => 'required|max:10',
             'price'             => 'required|max:10',
             'id_categories'      => 'required|exists:categories',
-            'foto'             => 'required|mimes:jpeg,png|max:512'
+            'foto'             => 'required|mimes:jpeg,png|max:512',
         ]);
 
         $input = $request->all();

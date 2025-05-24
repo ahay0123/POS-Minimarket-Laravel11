@@ -200,10 +200,18 @@
           <div class="pull-left image">
             <img src="{{ asset('assets')}}/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
           </div>
+          @auth
           <div class="pull-left info">
-            <p>Alexander Pierce</p>
-            <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+            <p>{{ Auth::user()->username }}</p>
+            <small><i class="fa fa-user-tag"></i> {{ Auth::user()->role }}</small>
+            <br>
           </div>
+          @else
+          <div class="pull-left info">
+            <p>Guest</p>
+            <a href="#"><i class="fa fa-circle text-danger"></i> Offline</a>
+          </div>
+          @endauth
         </div>
         <!-- search form -->
         <form action="#" method="get" class="sidebar-form">
@@ -219,6 +227,7 @@
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu">
           <li class="header">MAIN NAVIGATION</li>
+          @if (Auth::user()->role === 'admin')
           <li class="treeview">
             <a href="{{ url('/') }}">
               <i class="fa fa-table"></i>
@@ -227,15 +236,51 @@
           </li>
 
           <li>
+
             <a href="{{ url('categories') }}">
               <i class="fa fa-list"></i> <span>Category</span>
-            </a>  
+            </a>
           </li>
 
           <li>
             <a href="{{ url('user') }}">
               <i class="fa fa-user"></i> <span>User</span>
-            </a>  
+            </a>
+          </li>
+
+          <li>
+            <a href="{{ url('order') }}">
+              <i class="fa fa-user"></i> <span>Order</span>
+            </a>
+          </li>
+
+          <li>
+            <a href="{{ url('detail') }}">
+              <i class="fa fa-user"></i> <span>Detail Order</span>
+            </a>
+          </li>
+
+          <li>
+            <a href="{{ url('customer') }}">
+              <i class="fa fa-user"></i> <span>Customer / Member</span>
+            </a>
+          </li>
+          @endif
+
+          @if(Auth::user()->role === 'kasir')
+          <li>
+            <a href="{{ url('/kasir') }}">
+              <i class="fa fa-user"></i> <span>Kasir</span>
+            </a>
+          </li>
+
+          <li>
+            <a href="{{ url('customer') }}">
+              <i class="fa fa-user"></i> <span>Customer / Member</span>
+            </a>
+          </li>
+          @endif
+          </li>
           </li>
         </ul>
       </section>
