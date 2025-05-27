@@ -18,6 +18,19 @@
   <!-- AdminLTE Skins. Choose a skin from the css/skins
        folder instead of downloading all of them to reduce the load. -->
   <link rel="stylesheet" href="{{ asset('assets')}}/dist/css/skins/_all-skins.min.css">
+  <!-- iCheck -->
+  <link rel="stylesheet" href="{{ asset('assets')}}/plugins/iCheck/flat/blue.css">
+  <!-- Morris chart -->
+  <link rel="stylesheet" href="{{ asset('assets')}}/plugins/morris/morris.css">
+  <!-- jvectormap -->
+  <link rel="stylesheet" href="{{ asset('assets')}}/plugins/jvectormap/jquery-jvectormap-1.2.2.css">
+  <!-- Date Picker -->
+  <link rel="stylesheet" href="{{ asset('assets')}}/plugins/datepicker/datepicker3.css">
+  <!-- Daterange picker -->
+  <link rel="stylesheet" href="{{ asset('assets')}}/plugins/daterangepicker/daterangepicker.css">
+  <!-- bootstrap wysihtml5 - text editor -->
+  <link rel="stylesheet" href="{{ asset('assets')}}/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
+
 
   @stack('style')
 
@@ -137,20 +150,28 @@
             </li>
             <!-- User Account: style can be found in dropdown.less -->
             <li class="dropdown user user-menu">
+              @auth
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                 <img src="{{ asset('assets')}}/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
-                <span class="hidden-xs">Alexander Pierce</span>
+                <span class="hidden-xs">{{ Auth::user()->username }}</span>
               </a>
+              @else
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <img src="{{ asset('assets')}}/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+                <span class="hidden-xs">Offline</span>
+              </a>
+              @endauth
               <ul class="dropdown-menu">
                 <!-- User image -->
+                @auth
                 <li class="user-header">
                   <img src="{{ asset('assets')}}/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
-
                   <p>
-                    Alexander Pierce - Web Developer
+                    {{ Auth::user()->username }}
                     <small>Member since Nov. 2012</small>
                   </p>
                 </li>
+                @endauth
                 <!-- Menu Body -->
                 <li class="user-body">
                   <div class="row">

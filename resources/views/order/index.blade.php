@@ -19,7 +19,15 @@
     <!-- Default box -->
     <div class="box">
         <div class="box-header">
+            <form action="" method="GET" class="mb-3">
+                <label>Dari Tanggal:</label>
+                <input type="date" name="from" required>
 
+                <label>Sampai Tanggal:</label>
+                <input type="date" name="to" required>
+
+                <button type="submit" class="btn btn-success"> Download Excel</button>
+            </form> 
         </div>
         <!-- /.box-header -->
         <div class="box-body">
@@ -31,6 +39,7 @@
                         <th>User</th>
                         <th>Total</th>
                         <th>Tanggal Order</th>
+                        <th>Customer</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -46,6 +55,7 @@
                         </td>
                         <td>{{ number_format($row->total, 0, ',', '.') }}</td>
                         <td>{{ $row->tanggal_transaksi}}</td>
+                        <td>{{ $row->customer->nama ?? 'Pelanggan'}}</td>
                         <td>
                             <a href="{{ url("order/$row->id_order/edit") }}" class="btn btn-warning">
                                 <i class="fa fa-fw fa-pencil"></i>
@@ -68,6 +78,7 @@
                         <th>User</th>
                         <th>Total</th>
                         <th>Tanggal Order</th>
+                        <th>Customer</th>
                         <th>Action</th>
                     </tr>
                 </tfoot>

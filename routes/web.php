@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthControlle;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomersController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KasirController;
@@ -68,6 +69,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/customer', [CustomersController::class, 'index']);
     Route::get('/customer/add', [CustomersController::class, 'create']);
     Route::post('/customer/add', [CustomersController::class, 'store']);
+
+    Route::get('/dashboard', [DashboardController::class, 'index']);
 });
 
 // Route untuk kasir

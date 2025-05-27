@@ -61,10 +61,10 @@ class OrderController extends Controller
         // Simpan ke tabel transaksi
         $transaksi = \App\Models\Orders::create([
             'invoice' => 'INV - ' . now(),
-            'customer_id' => session('no_hp'),
             'tanggal' => now(),
             'total' => $total,
             'id_user' => 1, // Sesuaikan jika sudah ada sistem login
+            'no_hp' => session('no_hp'),
         ]);
 
         // Simpan ke transaksi_detail
