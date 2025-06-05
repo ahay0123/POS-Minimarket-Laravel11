@@ -8,6 +8,7 @@ use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KasirController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\OrderExportController;
 use App\Http\Controllers\UserController;
 
 // Route::get('/', function () {
@@ -26,10 +27,19 @@ Route::get('/login', function () {
 Route::post('/login', [AuthControlle::class, 'login'])->middleware('guest');
 Route::post('/logout', [AuthControlle::class, 'logout'])->name('logout')->middleware('auth');
 
+Route::get('/struk/{id}', [OrderController::class, 'showStruk']);
+
 
 // Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth'])->group(function () {
+    Route::get('/customer', [CustomersController::class, 'index']);
+    Route::get('/customer/add', [CustomersController::class, 'create']);
+    Route::post('/customer/add', [CustomersController::class, 'store']);
 
-
+    Route::get('/customer/{id}/edit', [CustomersController::class, 'edit']);
+    Route::patch('/customer/{id}/edit', [CustomersController::class, 'update']);
+    Route::delete('/customer/{id}/delete', [CustomersController::class, 'destroy']);
+});
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/categories', [CategoryController::class, 'index']);
@@ -66,15 +76,15 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/detail', [OrderController::class, 'indexdetail']);
     Route::delete('/detail', [OrderController::class, 'destroydetail']);
 
-    Route::get('/customer', [CustomersController::class, 'index']);
-    Route::get('/customer/add', [CustomersController::class, 'create']);
-    Route::post('/customer/add', [CustomersController::class, 'store']);
-
     Route::get('/dashboard', [DashboardController::class, 'index']);
+    // Route::get('/dashboard/chart-data', [DashboardController::class, 'chartData']);
+
+    Route::get('/order-export', [OrderExportController::class, 'export'])->name('order.export');
 });
 
 // Route untuk kasir
 Route::middleware(['auth', 'role:kasir'])->group(function () {
+
     Route::get('/kasir', [KasirController::class, 'index']);
     Route::post('keranjang/add', [KasirController::class, 'store']);
     Route::post('keranjang/tambah/{id}', [KasirController::class, 'tambah']);

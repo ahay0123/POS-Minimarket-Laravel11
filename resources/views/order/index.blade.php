@@ -19,15 +19,11 @@
     <!-- Default box -->
     <div class="box">
         <div class="box-header">
-            <form action="" method="GET" class="mb-3">
-                <label>Dari Tanggal:</label>
-                <input type="date" name="from" required>
-
-                <label>Sampai Tanggal:</label>
-                <input type="date" name="to" required>
-
-                <button type="submit" class="btn btn-success"> Download Excel</button>
-            </form> 
+            <form action="{{ route('order.export') }}" method="GET" >
+                <button type="submit" class="btn btn-success">
+                    <i class="fa fa-download"></i> Download Excel
+                </button>
+            </form>
         </div>
         <!-- /.box-header -->
         <div class="box-body">
@@ -40,6 +36,8 @@
                         <th>Total</th>
                         <th>Tanggal Order</th>
                         <th>Customer</th>
+                        <th>Uang Bayar</th>
+                        <th>Kembalian</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -51,11 +49,13 @@
                             {{ $row->invoice}}
                         </td>
                         <td>
-                            {{ $row->id_user}}
+                            {{ $row->users->username}}
                         </td>
                         <td>{{ number_format($row->total, 0, ',', '.') }}</td>
                         <td>{{ $row->tanggal_transaksi}}</td>
                         <td>{{ $row->customer->nama ?? 'Pelanggan'}}</td>
+                        <td>{{ number_format($row->paid_amount, 0, ',', '.')}}</td>
+                        <td>{{ number_format($row->return_amount, 0, ',', '.')}}</td>
                         <td>
                             <a href="{{ url("order/$row->id_order/edit") }}" class="btn btn-warning">
                                 <i class="fa fa-fw fa-pencil"></i>
@@ -79,6 +79,8 @@
                         <th>Total</th>
                         <th>Tanggal Order</th>
                         <th>Customer</th>
+                        <th>Uang Bayar</th>
+                        <th>Kembalian</th>
                         <th>Action</th>
                     </tr>
                 </tfoot>

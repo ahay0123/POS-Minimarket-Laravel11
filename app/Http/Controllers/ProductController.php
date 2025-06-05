@@ -13,7 +13,7 @@ class ProductController extends Controller
     public function index()
     {
         //
-        $data['result'] = \App\Models\Product::all();
+        $data['result'] = \App\Models\Product::orderBy('stock', 'asc')->get();
         return view('product/index')->with($data);
     }
 

@@ -8,7 +8,13 @@ class Orders extends Model
 {
     //
     protected $primaryKey = 'id_order';
-    protected $fillable = ['invoice', 'customer_id', 'id_user', 'total', 'tanggal_transaksi','no_hp'];
+    protected $fillable = ['invoice', 'customer_id', 'id_user', 'total', 'tanggal_transaksi','no_hp','paid_amount', 'return_amount'];
+
+
+    public function users()
+    {
+        return $this->hasOne(User::class, 'id_user', 'id_user');
+    }
 
     public function customer()
     {

@@ -22,6 +22,7 @@
   <link rel="stylesheet" href="{{ asset('assets')}}/plugins/iCheck/flat/blue.css">
   <!-- Morris chart -->
   <link rel="stylesheet" href="{{ asset('assets')}}/plugins/morris/morris.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
   <!-- jvectormap -->
   <link rel="stylesheet" href="{{ asset('assets')}}/plugins/jvectormap/jquery-jvectormap-1.2.2.css">
   <!-- Date Picker -->

@@ -191,17 +191,32 @@
 
                     <hr>
                     <h4><strong>Total:</strong> <span class="pull-right text-purple" id="totalText">Rp {{ number_format($total, 0, ',', '.') }}</span></h4>
+                    <form action="{{ url('/transaksi/store') }}" method="POST" id="formBayar">
+                        @csrf
+                        <h4><strong>Bayar:</strong>
+                            <span class="pull-right text-purple">
+                                <input type="number" id="bayar" oninput="hitungKembalian()" style="width: 160px;" require>
+                            </span>
+                        </h4>
 
-                    <h4><strong>Bayar:</strong>
-                        <span class="pull-right text-purple">
-                            <input type="number" id="bayar" oninput="hitungKembalian()" style="width: 160px;">
-                        </span>
-                    </h4>
+                        <h4><strong>Kembalian:</strong>
+                            <span class="pull-right text-purple" id="kembalianFormatted">Rp 0</span>
+                        </h4>
+                        <input type="hidden" id="diskonPersen" value="{{ session('diskon', 0) }}">
 
-                    <h4><strong>Kembalian:</strong>
-                        <span class="pull-right text-purple" id="kembalianFormatted">Rp 0</span>
-                    </h4>
-                    <input type="hidden" id="diskonPersen" value="{{ session('diskon', 0) }}">
+
+
+                </div>
+
+                <div class="panel-footer text-center">
+
+                    <input type="hidden" name="paid_amount" id="inputBayar">
+                    <input type="hidden" name="return_amount" id="inputKembalian">
+                    <input type="hidden" name="no_hp" value="{{ session('no_hp') }}">
+                    <button type="submit" class="btn btn-success btn-lg btn-block">
+                        <strong id="bayarButtonText">Bayar Rp ...</strong>
+                    </button>
+                    </form>
 
                     <script>
                         function formatRupiah(angka) {
@@ -232,32 +247,30 @@
 
                         function hitungKembalian() {
                             const bayar = parseInt(document.getElementById('bayar').value) || 0;
-                            const total = hitungTotal(); // Update ulang total setelah pajak & diskon
+                            const total = hitungTotal();
                             const kembalian = bayar - total;
 
                             document.getElementById('kembalianFormatted').textContent = formatRupiah(kembalian >= 0 ? kembalian : 0);
+                            document.getElementById('inputKembalian').value = kembalian >= 0 ? kembalian : 0;
                         }
 
                         document.addEventListener('DOMContentLoaded', function() {
                             hitungTotal();
                         });
 
-                        document.getElementById('formBayar').addEventListener('submit', function() {
-                            document.getElementById('inputBayar').value = document.getElementById('bayar').value;
+                        document.getElementById('formBayar').addEventListener('submit', function(e) {
+                            const bayar = parseInt(document.getElementById('bayar').value);
+
+                            if (isNaN(bayar) || bayar <= 0) {
+                                alert('Silakan isi nominal bayar terlebih dahulu.');
+                                e.preventDefault(); // Batalkan submit
+                                return;
+                            }
+
+                            document.getElementById('inputBayar').value = bayar;
+                            hitungKembalian(); // pastikan inputKembalian juga diisi
                         });
                     </script>
-
-                </div>
-
-                <div class="panel-footer text-center">
-                    <form action="{{ url('/transaksi/store') }}" method="POST" id="formBayar">
-                        @csrf
-                        <input type="hidden" name="bayar" id="inputBayar">
-                        <input type="hidden" name="no_hp" value="{{ session('no_hp') }}">
-                        <button type="submit" class="btn btn-success btn-lg btn-block">
-                            <strong id="bayarButtonText">Bayar Rp ...</strong>
-                        </button>
-                    </form>
 
                 </div>
             </div>

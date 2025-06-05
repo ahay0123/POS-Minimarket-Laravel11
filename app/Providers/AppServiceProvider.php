@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -12,6 +13,9 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         //
+        $this->app->bind('files', function ($app) {
+            return new Filesystem;  
+        });
     }
 
     /**

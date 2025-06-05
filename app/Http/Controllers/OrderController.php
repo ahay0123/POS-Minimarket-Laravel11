@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\OrderDetail;
 use App\Models\Orders;
 use App\Models\Product;
+use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
@@ -55,16 +56,35 @@ class OrderController extends Controller
         $total = $subtotalSetelahDiskon + $pajak;
 
         // Ambil input bayar dan hilangkan titik
-        $bayar = (int) str_replace('.', '', $request->input('bayar'));
-        $kembalian = $bayar - $total;
+        $bayar = $request->input('bayar');
+        $kembalian = $request->input('kembalian');
+
+        $validated = $request->validate([
+            'paid_amount' => 'required|numeric|min:0',
+            'return_amount' => 'required|numeric|min:0',
+            // lainnya sesuai kebutuhan
+        ]);
+
+        // Available alpha caracters
+        $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+        // generate a pin based on 2 * 7 digits + a random character
+        $pin = mt_rand(1000000, 9999999)
+            . mt_rand(1000000, 9999999)
+            . $characters[rand(0, strlen($characters) - 1)];
+
+        // shuffle the result
+        $string = str_shuffle($pin);
 
         // Simpan ke tabel transaksi
         $transaksi = \App\Models\Orders::create([
-            'invoice' => 'INV - ' . now(),
+            'invoice' => 'INV - ' . $string,
             'tanggal' => now(),
             'total' => $total,
-            'id_user' => 1, // Sesuaikan jika sudah ada sistem login
+            'id_user' => Auth::id(),    // Sesuaikan jika sudah ada sistem login
             'no_hp' => session('no_hp'),
+            'paid_amount' => $validated['paid_amount'],
+            'return_amount' => $validated['return_amount'],
         ]);
 
         // Simpan ke transaksi_detail
@@ -87,7 +107,15 @@ class OrderController extends Controller
         // Hapus keranjang dan diskon dari session
         session()->forget(['keranjang', 'diskon', 'no_hp']);
 
-        return redirect('kasir')->with('success', 'Transaksi berhasil disimpan.');
+        return view('struk.index', [
+            'orders' => $transaksi->load('details.product'),
+            'subtotal' => $subtotal,
+            'diskon' => $diskonPersen,
+            'pajak' => $pajakPersen,
+            'total' => $total,
+            'bayar' => $validated['paid_amount'],
+            'kembalian' => $validated['return_amount'],
+        ])->with('success', 'Transaksi berhasil disimpan.');
     }
 
     public function cekMember(Request $request)
@@ -122,8 +150,8 @@ class OrderController extends Controller
 
         \App\Models\OrderDetail::where('id_order', $id)->delete();
 
-        if ($status) return redirect('/detail')->with('success', 'Data berhasil di hapus');
-        else return redirect('/detail')->with('error', 'Data gagal di hapus ');
+        if ($status) return redirect('/order')->with('success', 'Data berhasil di hapus');
+        else return redirect('/order')->with('error', 'Data gagal di hapus ');
     }
 
     public function destroydetail($id)
@@ -133,5 +161,11 @@ class OrderController extends Controller
 
         if ($status) return redirect('/detail')->with('success', 'Data berhasil di hapus');
         else return redirect('/detail')->with('error', 'Data gagal di hapus ');
+    }
+
+    public function showStruk($id)
+    {
+        $orders = Orders::with('details.product')->findOrFail($id);
+        return view('struk.index', compact('orders'));
     }
 }

@@ -203,38 +203,60 @@
 </div>
 <!-- ./wrapper -->
 
-<!-- jQuery 2.2.3 -->
-<script src="{{ asset('assets')}}/plugins/jQuery/jquery-2.2.3.min.js"></script>
-<!-- Bootstrap 3.3.6 -->
-<script src="{{ asset('assets')}}/bootstrap/js/bootstrap.min.js"></script>
+<!-- jQuery (pastikan hanya satu versi dan paling atas) -->
+<script src="{{ asset('assets') }}/plugins/jQuery/jquery-2.2.3.min.js"></script>
+
+<!-- jQuery UI (harus setelah jQuery) -->
+<script src="{{ asset('assets') }}/plugins/jQueryUI/jquery-ui.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="{{ asset('assets') }}/bootstrap/js/bootstrap.min.js"></script>
+
 <!-- SlimScroll -->
-<script src="{{ asset('assets')}}/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+<script src="{{ asset('assets') }}/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+
 <!-- FastClick -->
-<script src="{{ asset('assets')}}/plugins/fastclick/fastclick.js"></script>
-<!-- AdminLTE App -->
-<script src="{{ asset('assets')}}/dist/js/app.min.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="{{ asset('assets')}}/dist/js/demo.js"></script>
-<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
-<!-- Morris.js charts -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
-<script src="{{ asset('assets')}}/plugins/morris/morris.min.js"></script>
+<script src="{{ asset('assets') }}/plugins/fastclick/fastclick.js"></script>
+
 <!-- Sparkline -->
-<script src="{{ asset('assets')}}/plugins/sparkline/jquery.sparkline.min.js"></script>
+<script src="{{ asset('assets') }}/plugins/sparkline/jquery.sparkline.min.js"></script>
+
 <!-- jvectormap -->
-<script src="{{ asset('assets')}}/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
-<script src="{{ asset('assets')}}/plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
-<!-- jQuery Knob Chart -->
-<script src="{{ asset('assets')}}/plugins/knob/jquery.knob.js"></script>
-<!-- daterangepicker -->
+<script src="{{ asset('assets') }}/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
+<script src="{{ asset('assets') }}/plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+
+<!-- jQuery Knob -->
+<script src="{{ asset('assets') }}/plugins/knob/jquery.knob.js"></script>
+
+<!-- Moment.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
-<script src="{{ asset('assets')}}/plugins/daterangepicker/daterangepicker.js"></script>
-<!-- datepicker -->
-<script src="{{ asset('assets')}}/plugins/datepicker/bootstrap-datepicker.js"></script>
-<!-- Bootstrap WYSIHTML5 -->
-<script src="{{ asset('assets')}}/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="{{ asset('assets')}}/dist/js/pages/dashboard.js"></script>
+
+<!-- Date Range Picker -->
+<script src="{{ asset('assets') }}/plugins/daterangepicker/daterangepicker.js"></script>
+
+<!-- Bootstrap Datepicker -->
+<script src="{{ asset('assets') }}/plugins/datepicker/bootstrap-datepicker.js"></script>
+
+<!-- WYSIHTML5 -->
+<script src="{{ asset('assets') }}/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
+
+<!-- Morris.js (raphael dulu, baru morris) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+<script src="{{ asset('assets') }}/plugins/morris/morris.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script> <!-- Bisa dihapus jika sudah ada baris atas -->
+
+<!-- AdminLTE App -->
+<script src="{{ asset('assets') }}/dist/js/app.min.js"></script>
+
+<!-- AdminLTE Demo (opsional) -->
+<script src="{{ asset('assets') }}/dist/js/demo.js"></script>
+
+<!-- QR Code Scanner -->
+<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+
+<!-- Dashboard Custom Script -->
+<script src="{{ asset('assets') }}/dist/js/pages/dashboard.js"></script>
+
 </body>
 
 </html>
