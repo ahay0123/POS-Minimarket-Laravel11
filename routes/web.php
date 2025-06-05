@@ -58,6 +58,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::patch('product/{id}/edit', [ProductController::class, 'update']);
     Route::delete('product/{id}/delete', [ProductController::class, 'destroy']);
 
+    Route::get('/export-product', [OrderExportController::class, 'exportProduct'])->name('product.export');
+
     Route::get('/product/{id}/print-barcode', [ProductController::class, 'printBarcode']);
 
 

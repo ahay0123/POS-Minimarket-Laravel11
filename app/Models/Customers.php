@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Customers extends Model
 {
     //
-    public $primaryKey = 'customer_id';
+    public $primaryKey = 'id_customers';
     protected $table = 'customers';
-    protected $fillable = ['customer_id','nama',  'alamat', 'tanggal_daftar', 'poin', 'status','no_hp'];
+    protected $fillable = ['id_customers','nama',  'alamat', 'tanggal_daftar', 'poin', 'status','no_hp'];
 
 }

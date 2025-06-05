@@ -251,6 +251,12 @@
           <li class="header">MAIN NAVIGATION</li>
           @if (Auth::user()->role === 'admin')
           <li class="treeview">
+            <a href="{{ url('/dashboard') }}">
+              <i class="fa fa-table"></i>
+              <span>Dashboard</span>
+            </a>
+          </li>
+          <li class="treeview">
             <a href="{{ url('/') }}">
               <i class="fa fa-table"></i>
               <span>Product</span>

@@ -53,7 +53,7 @@
 <body>
     <div class="text-center">
         <h4>TOKO MINIMARKET</h4>
-        <p>Jl. Contoh Alamat No.123<br>Telp: 0812-3456-7890</p>
+        <p>Jl. Halteu Maleber Bojong No.05<br>Telp: 0812-3456-7890</p>
         <hr>
         <p>Invoice: {{ $orders->invoice }}<br>
             Tanggal: {{ \Carbon\Carbon::parse($orders->tanggal)->format('d-m-Y H:i') }}</p>

@@ -23,6 +23,12 @@
                 <i class="fa fa-fw fa-plus-circle"></i>
                 Tambah
             </a>
+
+            <form action="{{ route('product.export') }}" method="GET" class="pull-right">
+                <button type="submit" class="btn btn-success">
+                    <i class="fa fa-download"></i> Download Excel
+                </button>
+            </form>
         </div>
         <!-- /.box-header -->
         <div class="box-body">

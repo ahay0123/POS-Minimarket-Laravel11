@@ -92,7 +92,7 @@
                         <a href="{{ url('product/' . $result->id_product . '/print-barcode') }}" target="_blank" class="btn btn-default">
                             <i class="fa fa-print"></i> Print Barcode
                         </a>
-                        <img src="data:image/png;base64,{{ DNS1D::getBarcodePNG($result->sku, 'EAN13') }}" alt="barcode" />
+                        <img src="data:image/png;base64,{{ DNS1D::getBarcodePNG($result->sku, 'C128') }}" alt="barcode" />
                     </div>
                 </div>
                 @endif
